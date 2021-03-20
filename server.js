@@ -11,11 +11,10 @@ var jsonParser = bodyParser.json()
 
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'windsurfNorge',
-  password: process.env.password,
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.post('/addSpot', jsonParser, (request, response) => {
