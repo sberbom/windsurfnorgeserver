@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const app = express()
 app.use(cors());
-const port = 3001
+const port = process.env.PORT || 3001
 var jsonParser = bodyParser.json()
 
 
