@@ -2,8 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { Pool } = require('pg')
 const cors = require('cors');
-const { preProcessFile } = require('typescript');
-const { request, response } = require('express');
 
 
 const app = express()
@@ -16,7 +14,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'windsurfNorge',
-  password: 'Stjernen1',
+  password: process.env.password,
   port: 5432,
 });
 
