@@ -7,7 +7,7 @@ require("firebase/auth");
 const admin = require('firebase-admin')
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCbmxpN4WIeeJC8RgRbX23vSxEliF4wHac",
+    apiKey: process.env.firebasekey,
     authDomain: "windsurfnorge.firebaseapp.com",
     databaseURL: "https://windsurfnorge.firebaseio.com",
     projectId: "windsurfnorge",
@@ -23,19 +23,11 @@ const port = process.env.PORT || 3001
 var jsonParser = bodyParser.json()
 
 
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'windsurfNorge',
-  password: 'Stjernen1',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.post('/addSpot', jsonParser, async (request, response) => {
