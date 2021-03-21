@@ -357,17 +357,10 @@ app.post('/addUser', jsonParser, async (request, response) => {
 
 app.post('/getUsers', async (request, response) => {
   try{
-    const {token} = request.body
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
-      const query = `SELECT * FROM users;`
-      pool.query(query, (error, result) => {
-        response.status(200).json(result.rows)
-      })
-    }
-    else{
-      response.status(401).send({'status': 'unauthorized'})
-    }
+    const query = `SELECT * FROM users;`
+    pool.query(query, (error, result) => {
+      response.status(200).json(result.rows)
+    })
   }
   catch(error){
     console.error(error)
