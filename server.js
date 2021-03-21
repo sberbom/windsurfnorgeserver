@@ -141,7 +141,7 @@ app.post('/addImage', jsonParser, async (request, response) => {
     const authorized = await admin.auth().verifyIdToken(token)
     if(authorized){
       let query = 'INSERT INTO images(spot_id, big_image, small_image, user_id) VALUES($1, $2, $3, $4)'
-      const values = [spot_id, small_image, big_image, user_id]
+      const values = [spot_id, big_image, small_image, user_id]
       pool.query(query, values);
 
       response.send({'status':'ok'})
@@ -179,9 +179,8 @@ app.post('/updateMainImage', jsonParser, async (request, response) => {
     if(authorized){
       let query = 'UPDATE spots SET main_image = $1 WHERE id = $2'
       const values = [main_image, spot_id]
-      pool.query(query, values, (error, result) => {
-        response.status(200)
-      });
+      pool.query(query, values)
+      response.status(200).send({'status':'ok'})
     }
     else{
       response.status(401).send({'status': 'unauthorized'})
