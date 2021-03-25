@@ -37,7 +37,7 @@ app.post('/getUserImages', jsonParser, (request, response) => getUserImages(requ
 
 app.listen(port, () => {
   admin.initializeApp(firebaseConfig);
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Windsurfnorge server listening at ${port}`)
 })
 
 
