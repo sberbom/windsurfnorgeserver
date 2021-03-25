@@ -1,40 +1,28 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const { Pool } = require('pg')
-const cors = require('cors');
-const firebase = require('firebase/app');
-require("firebase/auth");
-const admin = require('firebase-admin')
-
-const firebaseConfig = {
-    apiKey: process.env.firebasekey,
-    authDomain: "windsurfnorge.firebaseapp.com",
-    databaseURL: "https://windsurfnorge.firebaseio.com",
-    projectId: "windsurfnorge",
-    storageBucket: "windsurfnorge.appspot.com",
-    messagingSenderId: "40570796100",
-    appId: "1:40570796100:web:1fef46f02638fc9264a411",
-    measurementId: "G-2398SRG5XT"
-};
+import express from 'express'
+import bodyParser from 'body-parser'
+import pg from 'pg'
+import cors from 'cors';
+import {isAuthenticated, firebaseConfig} from './utils.js'
+import admin from'firebase-admin'
+import {dbConnectionString} from './keys.js'
 
 const app = express()
 app.use(cors());
 const port = process.env.PORT || 3001
 var jsonParser = bodyParser.json()
 
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL || dbConnectionString,
   ssl: {
     rejectUnauthorized: false
   }
 });
 
+
 app.post('/addSpot', jsonParser, async (request, response) => {
   try{
     const {name, about, approach, facebook, created_by, main_image, lat, lng, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized) {
+    if(isAuthenticated(token)) {
       const time = new Date(Date.now()).toISOString().replace('T',' ').replace('Z','');
       const query = `INSERT INTO spots 
         (name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views) 
@@ -57,8 +45,7 @@ app.post('/addSpot', jsonParser, async (request, response) => {
 app.post('/editSpot', jsonParser, async (request, response) => {
   try{
     const {name, about, approach, facebook, main_image, lat, lng, id, current_user_id, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const time = new Date(Date.now()).toISOString().replace('T',' ').replace('Z','');
 
       let query = `INSERT INTO spotedits(spot_id, user_id, time) VALUES ($1, $2, $3)`
@@ -86,8 +73,7 @@ app.post('/editSpot', jsonParser, async (request, response) => {
 app.post('/rating', jsonParser, async (request, response) => {
   try{
     const {rating, user_id, spot_id, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       let newRating = 0;
       let query = `SELECT * FROM ratings WHERE spot_id = $1 `
       let values = [spot_id]
@@ -138,8 +124,7 @@ app.post('/rating', jsonParser, async (request, response) => {
 app.post('/addImage', jsonParser, async (request, response) => {
   try{
     const {spot_id, small_image, big_image, user_id, token} = request.body
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       let query = 'INSERT INTO images(spot_id, big_image, small_image, user_id) VALUES($1, $2, $3, $4)'
       const values = [spot_id, big_image, small_image, user_id]
       pool.query(query, values);
@@ -175,8 +160,7 @@ app.post('/getImage', jsonParser, (request, response) => {
 app.post('/updateMainImage', jsonParser, async (request, response) => {
   try{
     const {spot_id, main_image, token} = request.body
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       let query = 'UPDATE spots SET main_image = $1 WHERE id = $2'
       const values = [main_image, spot_id]
       pool.query(query, values)
@@ -195,8 +179,7 @@ app.post('/updateMainImage', jsonParser, async (request, response) => {
 app.delete('/deleteImage', jsonParser, async (request, response) => {
   try{
     const {id, token} = request.body
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       let query = 'DELETE FROM images WHERE id = $1'
       const values = [id]
       pool.query(query, values);
@@ -275,8 +258,7 @@ app.get('/spots', (request, response) => {
 app.delete('/spot', jsonParser, async (request, response) => {
   try {
     const {id,token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const query = `UPDATE spots SET deleted = true WHERE id = $1`
       const values = [id]
       pool.query(query, values)
@@ -295,8 +277,7 @@ app.delete('/spot', jsonParser, async (request, response) => {
 app.post('/restoreSpot', jsonParser, async (request, response) => {
   try {
     const {id, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const query = `UPDATE spots SET deleted = false WHERE id = $1`
       const values = [id]
       pool.query(query, values)
@@ -315,8 +296,7 @@ app.post('/restoreSpot', jsonParser, async (request, response) => {
 app.post('/getUser', jsonParser, async (request, response) => {
   try {
     const {user_email, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const query = `SELECT * FROM users WHERE identifier=$1;`
       const values = [user_email]
       pool.query(query, values, (error, results) => {
@@ -337,8 +317,7 @@ app.post('/getUser', jsonParser, async (request, response) => {
 app.post('/addUser', jsonParser, async (request, response) => {
   try{
     const {user_email, token} = request.body
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const query = `INSERT INTO users(identifier) VALUES($1);`
       const values = [user_email]
       pool.query(query, values)
@@ -371,8 +350,7 @@ app.post('/getUsers', async (request, response) => {
 app.post('/getUserSpots', jsonParser, async (request, response) => {
   try {
     const {user_id, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const query = `SELECT * FROM spots WHERE createdby=$1;`
       const values = [user_id]
       pool.query(query, values, (error, results) => {
@@ -392,8 +370,7 @@ app.post('/getUserSpots', jsonParser, async (request, response) => {
 app.post('/getUserImages', jsonParser, async (request, response) => {
   try {
     const {user_id, token} = request.body;
-    const authorized = await admin.auth().verifyIdToken(token)
-    if(authorized){
+    if(isAuthenticated(token)){
       const query = `SELECT * FROM images WHERE user_id=$1;`
       const values = [user_id]
       pool.query(query, values, (error, results) => {
