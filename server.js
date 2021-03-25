@@ -1,10 +1,8 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import pg from 'pg'
 import cors from 'cors';
-import {isAuthenticated, firebaseConfig} from './utils.js'
+import {firebaseConfig} from './utils.js'
 import admin from'firebase-admin'
-import {dbConnectionString} from './keys.js'
 import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
 import {addImage, deleteImage, getImage, getImages} from './spotImageEndpoints.js'
 import {getUser, getUserImages, getUsers, getUserSpots} from './userEndpoints.js'
@@ -13,13 +11,6 @@ const app = express()
 app.use(cors());
 const port = process.env.PORT || 3001
 var jsonParser = bodyParser.json()
-
-export const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL || dbConnectionString,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
 
 // Spots
 app.post('/spot', jsonParser, (request, response) => getSpot(request, response));
@@ -43,7 +34,6 @@ app.post('/addUser', jsonParser, (request, response) => addUser(request, respons
 app.post('/getUsers', (request, response) => getUsers(request, response));
 app.post('/getUserSpots', jsonParser, (request, response) => getUserSpots(request, response));
 app.post('/getUserImages', jsonParser, (request, response) => getUserImages(request, response));
-
 
 app.listen(port, () => {
   admin.initializeApp(firebaseConfig);

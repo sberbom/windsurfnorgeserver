@@ -1,4 +1,4 @@
-import {pool} from './server.js';
+import {pool} from './utils.js';
 import {isAuthenticated} from './utils.js'
 
 export const addImage = (request, response) => {

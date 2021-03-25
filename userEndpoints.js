@@ -1,5 +1,5 @@
 import { request, response } from 'express';
-import {pool} from './server.js';
+import {pool} from './utils.js';
 import {isAuthenticated} from './utils.js'
 
 export const getUser = (request, response) => {

@@ -1,6 +1,7 @@
 import "@firebase/auth";
-import admin from'firebase-admin'
-import {firebaseKey} from './keys.js'
+import admin from'firebase-admin';
+import {firebaseKey, dbConnectionString} from './keys.js';
+import pg from 'pg';
 
 export const firebaseConfig = {
     apiKey: process.env.firebasekey || firebaseKey,
@@ -17,3 +18,10 @@ export const isAuthenticated = async (token) => {
     const authorized = await admin.auth().verifyIdToken(token)
     return authorized;
 }
+
+export const pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL || dbConnectionString,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
