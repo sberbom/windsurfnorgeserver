@@ -1,4 +1,3 @@
-import { request, response } from 'express';
 import {pool} from './utils.js';
 import {isAuthenticated} from './utils.js'
 

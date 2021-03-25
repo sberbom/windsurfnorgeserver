@@ -1,10 +1,12 @@
 import "@firebase/auth";
 import admin from'firebase-admin';
-import {firebaseKey, dbConnectionString} from './keys.js';
+import dotenv from 'dotenv'
 import pg from 'pg';
 
+dotenv.config()
+
 export const firebaseConfig = {
-    apiKey: process.env.firebasekey || firebaseKey,
+    apiKey: process.env.firebasekey,
     authDomain: "windsurfnorge.firebaseapp.com",
     databaseURL: "https://windsurfnorge.firebaseio.com",
     projectId: "windsurfnorge",
@@ -20,7 +22,7 @@ export const isAuthenticated = async (token) => {
 }
 
 export const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL || dbConnectionString,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false
     }
