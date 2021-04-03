@@ -23,16 +23,11 @@ export const getUser = (request, response) => {
 
 export const addUser = (request, response) => {
     try{
-        const {user_email, token} = request.body
-        if(isAuthenticated(token)){
-          const query = `INSERT INTO users(identifier) VALUES($1);`
-          const values = [user_email]
-          pool.query(query, values)
-          response.send({'status':'ok'});
-        }
-        else{
-          response.status(401).send({'status': 'unauthorized'})
-        }
+        const {user_email} = request.body
+        const query = `INSERT INTO users(identifier) VALUES($1);`
+        const values = [user_email]
+        pool.query(query, values)
+        response.send({'status':'ok'});
       }
       catch(error){
         console.error(error)
