@@ -4,8 +4,10 @@ import cors from 'cors';
 import {firebaseConfig} from './utils.js'
 import admin from'firebase-admin'
 import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
-import {addImage, deleteImage, getImage, getImages} from './spotImageEndpoints.js'
-import {getUser, getUserImages, getUsers, getUserSpots} from './userEndpoints.js'
+import * as spotImage from './spotImageEndpoints.js'
+// import * as forSaleImage from './objectForSaleImageEndpoints.js'
+import {getUser, getUserImages, getUsers, getUserSpots, addUser} from './userEndpoints.js'
+// import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
 
 const app = express()
 app.use(cors());
@@ -23,10 +25,10 @@ app.post('/restoreSpot', jsonParser, (request, response) => restoreSpot(request,
 app.post('/updateMainImage', jsonParser, (request, response) => updateMainImage(request, response))
 
 //Spot images
-app.post('/addImage', jsonParser, (request, response) => addImage(request, response));
-app.post('/getImage', jsonParser, (request, response) => getImage(request, response));
-app.delete('/deleteImage', jsonParser, (request, response) => deleteImage(request, response));
-app.post('/images', jsonParser, (request, response) => getImages(request, response));
+app.post('/addImage', jsonParser, (request, response) => spotImage.addImage(request, response));
+app.post('/getImage', jsonParser, (request, response) => spotImage.getImage(request, response));
+app.delete('/deleteImage', jsonParser, (request, response) => spotImage.deleteImage(request, response));
+app.post('/images', jsonParser, (request, response) => spotImage.getImages(request, response));
 
 //Users
 app.post('/getUser', jsonParser, (request, response) => getUser(request, response));
@@ -34,6 +36,18 @@ app.post('/addUser', jsonParser, (request, response) => addUser(request, respons
 app.post('/getUsers', (request, response) => getUsers(request, response));
 app.post('/getUserSpots', jsonParser, (request, response) => getUserSpots(request, response));
 app.post('/getUserImages', jsonParser, (request, response) => getUserImages(request, response));
+
+// //Forsale images
+// app.post('/addForSaleImage', jsonParser, (request, response) => forSaleImage.addImage(request, response));
+// app.post('/getForSaleImage', jsonParser, (request, response) => forSaleImage.getImage(request, response));
+// app.delete('/deleteForSaleImage', jsonParser, (request, response) => forSaleImage.deleteImage(request, response));
+// app.post('/forSaleImages', jsonParser, (request, response) => forSaleImage.getImages(request, response));
+
+// //For sale objects
+// app.post('/addForSaleObject', jsonParser, (request, response) => addObjectForSale(request, response));
+// app.post('/getForSaleObject', jsonParser, (request, response) => getObjectForSale(request, response));
+// app.post('/getForSaleObjects', jsonParser, (request, response) => getObjectsForSale(request, response));
+// app.post('/editForSaleObject', jsonParser, (request, response) => editObjectForSale(request, response));
 
 app.listen(port, () => {
   admin.initializeApp(firebaseConfig);
