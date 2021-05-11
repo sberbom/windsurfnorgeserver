@@ -32,6 +32,8 @@ export const getSpot = (request, response) => {
           FROM spots 
           LEFT JOIN images 
           ON spots.main_image = images.id
+          LEFT JOIN users
+          ON spots.createdby = users.id
           WHERE spots.name = $1;`
         pool.query(query, values, (error, result) => {
           response.status(200).json(result.rows)
