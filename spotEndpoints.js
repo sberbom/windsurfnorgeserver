@@ -28,7 +28,7 @@ export const getSpot = (request, response) => {
         pool.query(query, values)
     
         query = `SELECT 
-          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, big_image, small_image 
+          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, big_image, small_image, displayname 
           FROM spots 
           LEFT JOIN images 
           ON spots.main_image = images.id
