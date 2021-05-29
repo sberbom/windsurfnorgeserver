@@ -23,9 +23,9 @@ export const getUser = (request, response) => {
 
 export const addUser = (request, response) => {
     try{
-        const {user_email} = request.body
-        const query = `INSERT INTO users(identifier) VALUES($1);`
-        const values = [user_email]
+        const {displayName, user_email} = request.body
+        const query = `INSERT INTO users(identifier) VALUES($1, $2);`
+        const values = [displayName, user_email]
         pool.query(query, values)
         response.send({'status':'ok'});
       }
