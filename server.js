@@ -1,16 +1,21 @@
-import express from 'express'
+import * as spotImage from './spotImageEndpoints.js'
+
+import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
+// import * as forSaleImage from './objectForSaleImageEndpoints.js'
+import {addUser, getUser, getUserImages, getUserSpots, getUsers} from './userEndpoints.js'
+
+import admin from'firebase-admin'
 import bodyParser from 'body-parser'
 import cors from 'cors';
+import express from 'express'
 import {firebaseConfig} from './utils.js'
-import admin from'firebase-admin'
-import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
-import * as spotImage from './spotImageEndpoints.js'
-// import * as forSaleImage from './objectForSaleImageEndpoints.js'
-import {getUser, getUserImages, getUsers, getUserSpots, addUser} from './userEndpoints.js'
+
 // import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
 
 const app = express()
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 const port = process.env.PORT || 3001
 var jsonParser = bodyParser.json()
 
