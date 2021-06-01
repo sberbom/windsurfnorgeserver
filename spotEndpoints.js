@@ -1,5 +1,5 @@
-import {pool} from './utils.js';
 import {isAuthenticated} from './utils.js'
+import {pool} from './utils.js';
 
 export const getAllSpots = (response) => {
     try{
@@ -22,18 +22,16 @@ export const getAllSpots = (response) => {
 
 export const getSpot = (request, response) => {
     try{
-        const {name} = request.body
+        const {name} = request.body;
         let query = 'UPDATE spots SET views = views + 1 WHERE name = $1'
         const values = [name]
         pool.query(query, values)
     
         query = `SELECT 
-          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, big_image, small_image, displayname 
+          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, big_image, small_image 
           FROM spots 
           LEFT JOIN images 
           ON spots.main_image = images.id
-          LEFT JOIN users
-          ON spots.createdby = users.id
           WHERE spots.name = $1;`
         pool.query(query, values, (error, result) => {
           response.status(200).json(result.rows)
