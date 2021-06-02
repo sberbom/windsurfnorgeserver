@@ -1,5 +1,5 @@
-import {pool} from './utils.js';
 import {isAuthenticated} from './utils.js'
+import {pool} from './utils.js';
 
 export const addImage = (request, response) => {
     try{
@@ -61,6 +61,19 @@ export const getImages = (request, response) => {
         const query = 'SELECT * FROM images WHERE spot_id = $1;'
         const values = [spot_id]
         pool.query(query, values, (error, result) => {
+          response.status(200).json(result.rows)
+        })
+      }
+    catch(error){
+    console.error(error)
+    response.status(500).send({'status': 'error'})
+    }
+}
+
+export const getAllImages = (request, response) => {
+    try{
+        const query = 'SELECT * FROM images;'
+        pool.query(query, (error, result) => {
           response.status(200).json(result.rows)
         })
       }

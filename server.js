@@ -3,11 +3,11 @@ import * as spotImage from './spotImageEndpoints.js'
 import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
 // import * as forSaleImage from './objectForSaleImageEndpoints.js'
 import {addUser, getUser, getUserImages, getUserSpots, getUsers} from './userEndpoints.js'
+import express, { request, response } from 'express'
 
 import admin from'firebase-admin'
 import bodyParser from 'body-parser'
 import cors from 'cors';
-import express from 'express'
 import {firebaseConfig} from './utils.js'
 
 // import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
@@ -34,6 +34,7 @@ app.post('/addImage', jsonParser, (request, response) => spotImage.addImage(requ
 app.post('/getImage', jsonParser, (request, response) => spotImage.getImage(request, response));
 app.delete('/deleteImage', jsonParser, (request, response) => spotImage.deleteImage(request, response));
 app.post('/images', jsonParser, (request, response) => spotImage.getImages(request, response));
+app.post('/allImages', jsonParser, (request, response) => spotImage.getAllImages(request, response));
 
 //Users
 app.post('/getUser', jsonParser, (request, response) => getUser(request, response));
