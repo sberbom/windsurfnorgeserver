@@ -16,7 +16,9 @@ var cors = require('cors')
 // import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
 
 const app = express()
-app.use(cors());
+app.use(cors({
+  origin = '*'
+}));
 app.use(express.json());
 const port = process.env.PORT || 3001
 
