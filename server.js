@@ -14,9 +14,7 @@ import {firebaseConfig} from './utils.js'
 // import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
 
 const app = express()
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors());
 const port = process.env.PORT || 3001
 var jsonParser = bodyParser.json()
 
