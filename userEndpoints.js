@@ -12,6 +12,8 @@ export const getUser = (request, response) => {
           })
         }
         else{
+          response.header("Access-Control-Allow-Origin", "*");
+          response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
           response.status(401).send({'status': 'unauthorized'})
         }
       }
@@ -27,6 +29,9 @@ export const addUser = (request, response) => {
         const query = `INSERT INTO users(id, displayname) VALUES($1, $2);`
         const values = [uid, displayName];
         pool.query(query, values)
+        response.header("Access-Control-Allow-Origin", "*");
+        response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
         response.send({'status':'ok'});
       }
       catch(error){
@@ -39,6 +44,8 @@ export const getUsers = (request, response) => {
     try{
         const query = `SELECT * FROM users;`
         pool.query(query, (error, result) => {
+          response.header("Access-Control-Allow-Origin", "*");
+          response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
           response.status(200).json(result.rows)
         })
       }
@@ -55,6 +62,8 @@ export const getUserSpots = (request, response) => {
           const query = `SELECT * FROM spots WHERE createdby=$1;`
           const values = [user_id]
           pool.query(query, values, (error, results) => {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             response.status(200).send(results.rows)
           })
         }
@@ -74,7 +83,9 @@ export const getUserImages = (request, response) => {
         if(isAuthenticated(token)){
           const query = `SELECT * FROM images WHERE user_id=$1;`
           const values = [user_id]
-          pool.query(query, values, (error, results) => {
+          pool.query(query, values, (error, results) => { 
+              response.header("Access-Control-Allow-Origin", "*");
+              response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
               response.status(200).send(results.rows)
           })
         }
@@ -94,7 +105,10 @@ export const updateUser= (request, response) => {
         if(isAuthenticated(token)){
           const query = `UPDATE users SET displayname = $1 WHERE id=$2;`
           const values = [user.displayName, user.uid]
-          pool.query(query, values, (error, results) => {
+          pool.query(query, values, (error, results) => { 
+              response.header("Access-Control-Allow-Origin", "*");
+              response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
               response.status(200).send({"status" : "ok"})
           })
         }
