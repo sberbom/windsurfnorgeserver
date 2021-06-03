@@ -8,8 +8,10 @@ import express, { request, response } from 'express'
 
 import admin from'firebase-admin'
 import bodyParser from 'body-parser'
-import cors from 'cors';
 import {firebaseConfig} from './utils.js'
+
+//import cors from 'cors';
+var cors = require('cors')
 
 // import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
 
