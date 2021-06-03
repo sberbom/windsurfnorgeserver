@@ -1,12 +1,12 @@
-import {pool} from './utils.js';
 import {isAuthenticated} from './utils.js'
+import {pool} from './utils.js';
 
 export const getUser = (request, response) => {
     try {
-        const {user_email, token} = request.body;
+        const {uid, token} = request.body;
         if(isAuthenticated(token)){
-          const query = `SELECT * FROM users WHERE identifier=$1;`
-          const values = [user_email]
+          const query = `SELECT * FROM users WHERE id=$1;`
+          const values = [uid]
           pool.query(query, values, (error, results) => {
             response.status(200).send(results.rows)
           })
@@ -23,9 +23,9 @@ export const getUser = (request, response) => {
 
 export const addUser = (request, response) => {
     try{
-        const {displayName, user_email} = request.body
-        const query = `INSERT INTO users(identifier) VALUES($1, $2);`
-        const values = [displayName, user_email]
+        const {displayName, uid} = request.body
+        const query = `INSERT INTO users(id, displayname) VALUES($1, $2);`
+        const values = [uid, displayName];
         pool.query(query, values)
         response.send({'status':'ok'});
       }
@@ -76,6 +76,26 @@ export const getUserImages = (request, response) => {
           const values = [user_id]
           pool.query(query, values, (error, results) => {
               response.status(200).send(results.rows)
+          })
+        }
+        else{
+          response.status(401).send({'status': 'unauthorized'})
+        }
+      }
+      catch(error){
+        console.error(error)
+        response.status(500).send({'status': 'error'})  
+      }
+}
+
+export const updateUser= (request, response) => {
+    try {
+        const {user, token} = request.body;
+        if(isAuthenticated(token)){
+          const query = `UPDATE users SET displayname = $1 WHERE id=$2;`
+          const values = [user.displayName, user.uid]
+          pool.query(query, values, (error, results) => {
+              response.status(200).send({"status" : "ok"})
           })
         }
         else{
