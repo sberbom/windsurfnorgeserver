@@ -15,38 +15,38 @@ import {firebaseConfig} from './utils.js'
 
 const app = express()
 app.use(cors());
+app.use(express.json());
 const port = process.env.PORT || 3001
-var jsonParser = bodyParser.json()
 
 // Spots
-app.post('/spot', jsonParser, (request, response) => getSpot(request, response));
-app.delete('/spot', jsonParser, (request, response) => deleteSpot(request, response));
+app.post('/spot', (request, response) => getSpot(request, response));
+app.delete('/spot', (request, response) => deleteSpot(request, response));
 app.get('/spots', (request, response) => getAllSpots(response));
-app.post('/editSpot', jsonParser, (request, response) => editSpot(request, response));
-app.post('/addSpot', jsonParser, (request, response) => addSpot(request, response));
-app.post('/rating', jsonParser, (request, response) => updateRating(request, response));
-app.post('/restoreSpot', jsonParser, (request, response) => restoreSpot(request, response));
-app.post('/updateMainImage', jsonParser, (request, response) => updateMainImage(request, response))
+app.post('/editSpot', (request, response) => editSpot(request, response));
+app.post('/addSpot', (request, response) => addSpot(request, response));
+app.post('/rating', (request, response) => updateRating(request, response));
+app.post('/restoreSpot', (request, response) => restoreSpot(request, response));
+app.post('/updateMainImage', (request, response) => updateMainImage(request, response))
 
 //Spot images
-app.post('/addImage', jsonParser, (request, response) => spotImage.addImage(request, response));
-app.post('/getImage', jsonParser, (request, response) => spotImage.getImage(request, response));
-app.delete('/deleteImage', jsonParser, (request, response) => spotImage.deleteImage(request, response));
-app.post('/images', jsonParser, (request, response) => spotImage.getImages(request, response));
-app.post('/allImages', jsonParser, (request, response) => spotImage.getAllImages(request, response));
+app.post('/addImage', (request, response) => spotImage.addImage(request, response));
+app.post('/getImage', (request, response) => spotImage.getImage(request, response));
+app.delete('/deleteImage', (request, response) => spotImage.deleteImage(request, response));
+app.post('/images', (request, response) => spotImage.getImages(request, response));
+app.post('/allImages', (request, response) => spotImage.getAllImages(request, response));
 
 //Users
-app.post('/getUser', jsonParser, (request, response) => getUser(request, response));
-app.post('/addUser', jsonParser, (request, response) => addUser(request, response));
-app.post('/updateUser', jsonParser, (request, response) => updateUser(request, response));
+app.post('/getUser', (request, response) => getUser(request, response));
+app.post('/addUser', (request, response) => addUser(request, response));
+app.post('/updateUser', (request, response) => updateUser(request, response));
 app.post('/getUsers', (request, response) => getUsers(request, response));
-app.post('/getUserSpots', jsonParser, (request, response) => getUserSpots(request, response));
-app.post('/getUserImages', jsonParser, (request, response) => getUserImages(request, response));
+app.post('/getUserSpots', (request, response) => getUserSpots(request, response));
+app.post('/getUserImages', (request, response) => getUserImages(request, response));
 
 //Forum
-app.post('/getPosts', jsonParser, (request, response) => forum.getPosts(request, response));
-app.post('/createPost', jsonParser, (request, response) => forum.createPost(request, response));
-app.post('/createResponse', jsonParser, (request, response) => forum.createResponse(request, response));
+app.post('/getPosts', (request, response) => forum.getPosts(request, response));
+app.post('/createPost', (request, response) => forum.createPost(request, response));
+app.post('/createResponse', (request, response) => forum.createResponse(request, response));
 
 // //Forsale images
 // app.post('/addForSaleImage', jsonParser, (request, response) => forSaleImage.addImage(request, response));
