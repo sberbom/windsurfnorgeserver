@@ -47,9 +47,9 @@ app.post('/getUserSpots', (request, response) => getUserSpots(request, response)
 app.post('/getUserImages', (request, response) => getUserImages(request, response));
 
 //Forum
-app.post('/getPosts', (request, response) => forum.getPosts(request, response));
-app.post('/createPost', (request, response) => forum.createPost(request, response));
-app.post('/createResponse', (request, response) => forum.createResponse(request, response));
+//app.post('/getPosts', (request, response) => forum.getPosts(request, response));
+//app.post('/createPost', (request, response) => forum.createPost(request, response));
+//app.post('/createResponse', (request, response) => forum.createResponse(request, response));
 
 // //Forsale images
 // app.post('/addForSaleImage', jsonParser, (request, response) => forSaleImage.addImage(request, response));
