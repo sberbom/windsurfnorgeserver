@@ -1,8 +1,9 @@
+import * as forum from './forumEndpoints.js'
 import * as spotImage from './spotImageEndpoints.js'
 
 import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
 // import * as forSaleImage from './objectForSaleImageEndpoints.js'
-import {addUser, getUser, getUserImages, getUserSpots, getUsers} from './userEndpoints.js'
+import {addUser, getUser, getUserImages, getUserSpots, getUsers, updateUser} from './userEndpoints.js'
 import express, { request, response } from 'express'
 
 import admin from'firebase-admin'
@@ -39,9 +40,15 @@ app.post('/allImages', jsonParser, (request, response) => spotImage.getAllImages
 //Users
 app.post('/getUser', jsonParser, (request, response) => getUser(request, response));
 app.post('/addUser', jsonParser, (request, response) => addUser(request, response));
+app.post('/updateUser', jsonParser, (request, response) => updateUser(request, response));
 app.post('/getUsers', (request, response) => getUsers(request, response));
 app.post('/getUserSpots', jsonParser, (request, response) => getUserSpots(request, response));
 app.post('/getUserImages', jsonParser, (request, response) => getUserImages(request, response));
+
+//Forum
+app.post('/getPosts', jsonParser, (request, response) => forum.getPosts(request, response));
+app.post('/createPost', jsonParser, (request, response) => forum.createPost(request, response));
+app.post('/createResponse', jsonParser, (request, response) => forum.createResponse(request, response));
 
 // //Forsale images
 // app.post('/addForSaleImage', jsonParser, (request, response) => forSaleImage.addImage(request, response));
