@@ -4,9 +4,11 @@ import {pool} from './utils.js';
 export const getAllSpots = (response) => {
     try{
         const query = `SELECT 
-          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, deleted, big_image, small_image, windsensor 
+          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, deleted, big_image, small_image, windsensor , sv, v, nv, n, nø, ø, sø, s
           FROM spots LEFT JOIN images 
           ON spots.main_image = images.id 
+          left join winddirections
+          on spots.id = winddirections.spot
           WHERE spots.deleted = false
           ORDER BY views DESC;`
         pool.query(query, (error, result) => {
@@ -28,7 +30,7 @@ export const getSpot = (request, response) => {
         pool.query(query, values)
     
         query = `SELECT 
-          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, big_image, small_image, users.id as uid, displayname, windsensor 
+          spots.id, name, about, approach, facebook, rating, created, createdby, main_image, lat, lng, views, big_image, small_image, users.id as uid, displayname, windsensor
           FROM spots 
           LEFT JOIN images 
           ON spots.main_image = images.id

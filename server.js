@@ -1,5 +1,6 @@
 //import * as forum from './forumEndpoints.js'
 import * as spotImage from './spotImageEndpoints.js'
+import * as windDirections from './windDirectionsEndpoints.js';
 
 import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
 // import * as forSaleImage from './objectForSaleImageEndpoints.js'
@@ -7,7 +8,6 @@ import {addUser, getUser, getUserImages, getUserSpots, getUsers, updateUser} fro
 import express, { request, response } from 'express'
 
 import admin from'firebase-admin'
-import bodyParser from 'body-parser'
 import cors from 'cors';
 import {firebaseConfig} from './utils.js'
 
@@ -43,6 +43,11 @@ app.post('/updateUser', (request, response) => updateUser(request, response));
 app.post('/getUsers', (request, response) => getUsers(request, response));
 app.post('/getUserSpots', (request, response) => getUserSpots(request, response));
 app.post('/getUserImages', (request, response) => getUserImages(request, response));
+
+//WindDirections
+app.post('/getWindDirections', (request, response) => windDirections.getWindDirections(request, response));
+app.post('/addWindDirections', (request, response) => windDirections.addWindDirections(request, response));
+app.post('/updateWindDirections', (request, response) => windDirections.updateWindDirections(request, response));
 
 //Forum
 //app.post('/getPosts', (request, response) => forum.getPosts(request, response));
