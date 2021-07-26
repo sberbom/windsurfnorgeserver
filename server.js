@@ -1,6 +1,6 @@
-//import * as forum from './forumEndpoints.js'
-import * as spotImage from './spotImageEndpoints.js'
-import * as windDirections from './windDirectionsEndpoints.js';
+import * as forum from './forumEndpoints.js'
+import { addImage, getImage, deleteImage, getImages, getAllImages } from './spotImageEndpoints.js';
+import {getWindDirections, addWindDirections, updateWindDirections} from './windDirectionsEndpoints.js';
 
 import {addSpot, deleteSpot, editSpot, getAllSpots, getSpot, restoreSpot, updateMainImage, updateRating} from './spotEndpoints.js'
 // import * as forSaleImage from './objectForSaleImageEndpoints.js'
@@ -30,11 +30,11 @@ app.post('/restoreSpot', (request, response) => restoreSpot(request, response));
 app.post('/updateMainImage', (request, response) => updateMainImage(request, response))
 
 //Spot images
-app.post('/addImage', (request, response) => spotImage.addImage(request, response));
-app.post('/getImage', (request, response) => spotImage.getImage(request, response));
-app.delete('/deleteImage', (request, response) => spotImage.deleteImage(request, response));
-app.post('/images', (request, response) => spotImage.getImages(request, response));
-app.post('/allImages', (request, response) => spotImage.getAllImages(request, response));
+app.post('/addImage', (request, response) => addImage(request, response));
+app.post('/getImage', (request, response) => getImage(request, response));
+app.delete('/deleteImage', (request, response) => deleteImage(request, response));
+app.post('/images', (request, response) => getImages(request, response));
+app.post('/allImages', (request, response) => getAllImages(request, response));
 
 //Users
 app.post('/getUser', (request, response) => getUser(request, response));
@@ -45,14 +45,15 @@ app.post('/getUserSpots', (request, response) => getUserSpots(request, response)
 app.post('/getUserImages', (request, response) => getUserImages(request, response));
 
 //WindDirections
-app.post('/getWindDirections', (request, response) => windDirections.getWindDirections(request, response));
-app.post('/addWindDirections', (request, response) => windDirections.addWindDirections(request, response));
-app.post('/updateWindDirections', (request, response) => windDirections.updateWindDirections(request, response));
+app.post('/getWindDirections', (request, response) => getWindDirections(request, response));
+app.post('/addWindDirections', (request, response) => addWindDirections(request, response));
+app.post('/updateWindDirections', (request, response) => updateWindDirections(request, response));
 
 //Forum
-//app.post('/getPosts', (request, response) => forum.getPosts(request, response));
-//app.post('/createPost', (request, response) => forum.createPost(request, response));
-//app.post('/createResponse', (request, response) => forum.createResponse(request, response));
+app.post('/getPosts', (request, response) => forum.getAllPosts(request, response));
+app.post('/getPostComments', (request, response) => forum.getPostComments(request, response));
+app.post('/createPost', (request, response) => forum.addPost(request, response));
+app.post('/createResponse', (request, response) => forum.addPostComment(request, response));
 
 // //Forsale images
 // app.post('/addForSaleImage', jsonParser, (request, response) => forSaleImage.addImage(request, response));
