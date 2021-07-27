@@ -93,7 +93,7 @@ export const updateUser= (request, response) => {
         const {user, token} = request.body;
         if(isAuthenticated(token)){
           const query = `UPDATE users SET displayname = $1 WHERE id=$2;`
-          const values = [user.displayName, user.uid]
+          const values = [user.displayname, user.uid]
           pool.query(query, values, (error, results) => { 
               response.status(200).send({"status" : "ok"})
           })
