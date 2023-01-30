@@ -14,8 +14,9 @@ import {firebaseConfig} from './utils.js'
 // import {getObjectsForSale, getObjectForSale, addObjectForSale, editObjectForSale} from './objectsForSaleEndpoint.js'
 
 const app = express()
-app.use(cors());
-app.options('*', cors());  // enable pre-flight
+app.use(cors({
+  origin: '*'
+}))
 app.use(express.json());
 const port = process.env.PORT || 3001
 
